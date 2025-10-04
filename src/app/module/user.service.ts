@@ -1,3 +1,8 @@
+import { envVars } from "../config/env";
+import AppError from "../errorHelpers/appError";
+import { IAuthProvider, IUser } from "./user.interface";
+import { User } from "./user.model";
+import httpStatus from "http-status-codes"
 
 
 const createUser = async (payload: Partial<IUser>) => {
