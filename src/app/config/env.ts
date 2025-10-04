@@ -21,8 +21,7 @@ const loadEnvVariables = () : EnvConfig =>{
 
     return {
         PORT: process.env.PORT as string,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        DB_URL: process.env.DB_URL!,
+        DB_URL: process.env.DB_URL as string,
         NODE_ENV: process.env.NODE_ENV as "development" | "production",
         BCRYPT_SALT_ROUND: process.env.BCRYPT_SALT_ROUND as string
     }
