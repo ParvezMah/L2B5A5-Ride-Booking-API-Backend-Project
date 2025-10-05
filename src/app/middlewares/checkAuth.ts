@@ -26,9 +26,7 @@ export const checkAuth =
       if (!isUserExist) {
         throw new AppError(httpStatus.BAD_REQUEST, "User does not exist");
       }
-      // if (isUserExist.isActive === false) {
-      //     throw new AppError(httpStatus.BAD_REQUEST, `User is ${isUserExist.isActive}`)
-      // }
+
       if (
         authRoles.length &&
         !authRoles
