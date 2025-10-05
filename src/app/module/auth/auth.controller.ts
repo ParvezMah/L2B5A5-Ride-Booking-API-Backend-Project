@@ -26,7 +26,6 @@ const credentialsLogin = catchAsync(async (req: Request, res: Response, next: Ne
     })
 })
 
-
 const getNewAccessToken = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const refreshToken = req.cookies.refreshToken;
     console.log("refreshToken from cookies : ", refreshToken)
@@ -88,6 +87,10 @@ const resetPassword = catchAsync(async (req: Request, res: Response, next: NextF
         data: null,
     })
 })
+
+// router.get("/google",   router.get("/google/callback", 
+
+// router.get("/google/callback",     router.get("/google/callback", 
 
 
 

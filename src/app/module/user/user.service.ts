@@ -1,9 +1,10 @@
 import { envVars } from "../../config/env";
 import AppError from "../../errorHelpers/appError";
-import { IAuthProvider, IUser } from "./user.interface";
+import { IAuthProvider, IUser, Role } from "./user.interface";
 import { User } from "./user.model";
 import httpStatus from "http-status-codes"
 import bcryptjs from "bcryptjs"
+import { JwtPayload } from "jsonwebtoken";
 
 
 const createUser = async (payload: Partial<IUser>) => {
@@ -47,7 +48,33 @@ const getAllUsers = async () => {
     };
 };
 
+const updateUser = async (userId: string, payload: Partial<IUser>, decodedToken: JwtPayload) => {
+  const ifUserExist = await User.findById(userId);
+  if (!ifUserExist) {
+    throw new AppError(httpStatus.NOT_FOUND, "User Not Found");
+  }
+
+  // Role update restrictions
+  if (payload.role) {
+    if ([Role.RIDER, Role.DRIVER].includes(decodedToken.role)) {
+      throw new AppError(
+        httpStatus.FORBIDDEN,
+        "You are not authorized to change roles"
+      );
+    }
+    if (payload.role === Role.SUPER_ADMIN && decodedToken.role === Role.ADMIN) {
+      throw new AppError(
+        httpStatus.FORBIDDEN,
+        "You are not authorized to assign SUPER_ADMIN"
+      );
+    }
+  }
+}
+
+
+
 export const UserServices = {
     createUser,
-    getAllUsers
+    getAllUsers,
+    updateUser
 }
