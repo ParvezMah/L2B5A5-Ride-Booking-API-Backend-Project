@@ -5,6 +5,7 @@ import { catchAsync } from "../../utils/catchAsync"
 import { sendResponse } from "../../utils/sendResponse"
 import { AuthServices } from "./auth.service"
 import AppError from "../../errorHelpers/appError"
+import { setAuthCookie } from "../../utils/setAuthCookie"
 
 
 
@@ -13,21 +14,24 @@ const credentialsLogin = catchAsync(async (req: Request, res: Response, next: Ne
 
     const loginInfo = await AuthServices.credentialsLogin(req.body)
 
+    setAuthCookie(res, loginInfo)
 
-        sendResponse(res, {
-            success: true,
-            statusCode: httpStatus.OK,
-            message: "User Logged In Successfully",
-            data: loginInfo
-        })
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "User Logged In Successfully",
+        data: loginInfo
+    })
 })
 
 
 const getNewAccessToken = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const refreshToken = req.cookies.refreshToken;
+    console.log("refreshToken from cookies : ", refreshToken)
 
     // const refreshToken = req.headers.authorization;
-    // console.log(refreshToken)
+    // console.log("getNewAccessToken refreshToken : ", refreshToken)
 
     if (!refreshToken) {
         throw new AppError(httpStatus.BAD_REQUEST, "There is No refresh token recieved from cookies")
