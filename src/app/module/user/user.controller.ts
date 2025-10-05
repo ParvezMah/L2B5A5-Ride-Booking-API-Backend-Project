@@ -45,12 +45,14 @@ const updateUser = catchAsync(async (req: Request, res: Response) => {
     payload,
     verifiedToken as JwtPayload
   );
+  console.log("Updated user data : ", user)
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.CREATED,
     message: "User Updated Successfully",
-    data: user,
+    data: user
   });
+
 });
 
 

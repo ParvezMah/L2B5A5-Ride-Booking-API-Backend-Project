@@ -28,7 +28,7 @@ const credentialsLogin = catchAsync(async (req: Request, res: Response, next: Ne
 
 const getNewAccessToken = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const refreshToken = req.cookies.refreshToken;
-    console.log("refreshToken from cookies : ", refreshToken)
+
 
     // const refreshToken = req.headers.authorization;
     // console.log("getNewAccessToken refreshToken : ", refreshToken)

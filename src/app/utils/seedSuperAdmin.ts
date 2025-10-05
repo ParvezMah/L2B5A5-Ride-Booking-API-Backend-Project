@@ -37,7 +37,7 @@ const seedSuparAdmin = async () => {
     };
 
     await User.create(payload);
-    console.log("user from suparadmin");
+
   } catch (error) {
     console.log(error);
   }

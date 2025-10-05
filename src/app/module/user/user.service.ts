@@ -69,6 +69,32 @@ const updateUser = async (userId: string, payload: Partial<IUser>, decodedToken:
       );
     }
   }
+
+  if (payload.password) {
+    payload.password = await bcryptjs.hash(
+      payload.password,
+      Number(envVars.BCRYPT_SALT_ROUND)
+    );
+  }
+
+  const newUpdatedUser = await User.findByIdAndUpdate(
+    userId,
+    {
+      $set: {
+        ...payload,
+      },
+    },
+    { new: true, runValidators: true }
+  );
+
+  if (!newUpdatedUser) {
+    throw new AppError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      "Failed to update user"
+    );
+  }
+
+  return newUpdatedUser;
 }
 
 
