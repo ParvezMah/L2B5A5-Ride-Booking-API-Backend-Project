@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { UserControllers } from "./user.controller";
 import { validateRequest } from "../../middlewares/validateRequest";
+import { UserControllers } from "./user.controller";
 import { createUserZodSchema } from "./user.validation";
 import { checkAuth } from "../../middlewares/checkAuth";
 import { Role } from "./user.interface";
@@ -15,7 +15,7 @@ router.post("/register",
 
 router.get(
   "/all-users",
-  // checkAuth(Role.ADMIN, Role.SUPER_ADMIN), //Add login with Admin or Superadmin | SeedSuperadmin
+  checkAuth(Role.ADMIN, Role.SUPER_ADMIN), //Add login with Admin or Superadmin | SeedSuperadmin
   UserControllers.getAllUsers
 );
 
