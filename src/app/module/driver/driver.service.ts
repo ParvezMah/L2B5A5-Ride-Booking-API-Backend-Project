@@ -3,6 +3,7 @@ import httpStatus from "http-status-codes"
 import AppError from "../../errorHelpers/appError";
 import { IDriver } from "./driver.interface";
 import { Driver } from "./driver.model";
+import { Types } from "mongoose";
 
 
 const applyAsDriver = async (user: any, payload: IDriver) => {
@@ -26,7 +27,10 @@ const applyAsDriver = async (user: any, payload: IDriver) => {
 };
 
 const getMyProfile = async (driverId: string) => {
-  return await Driver.findOne({userId:driverId})
+  // const driver =  await Driver.findOne({userId:driverId})
+  const driver =  await Driver.findOne({userId:new Types.ObjectId(driverId)})
+  console.log("getMyProfile drive : ", driver);
+  return driver
 };
 
 export const DriverServices = {
