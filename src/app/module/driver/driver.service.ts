@@ -110,6 +110,17 @@ const suspendDriver = async (id: string) => {
   return driver;
 };
 
+const updateDriver = async (id: string, payload: Partial<IDriver>) => {
+  const driver = await Driver.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  });
+  if (!driver) {
+    throw new AppError(httpStatus.NOT_FOUND, "Driver not found");
+  }
+  return driver;
+};
+
 
 
 
@@ -121,5 +132,6 @@ export const DriverServices = {
     getAllDrivers,
     getSingleDriver,
     approveDriver,
-    suspendDriver
+    suspendDriver,
+    updateDriver
 }

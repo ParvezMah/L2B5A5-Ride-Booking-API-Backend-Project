@@ -122,6 +122,18 @@ const suspendDriver = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateDriver = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const id = req.params.id;
+  const payload = req.body;
+  const result = await DriverServices.updateDriver(id, payload);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Driver updated successfully",
+    data: result,
+  });
+});
+
 
 
 
@@ -135,5 +147,6 @@ export const DriverControllers = {
     getAllDrivers,
     getSingleDriver,
     approveDriver,
-    suspendDriver
+    suspendDriver,
+    updateDriver
 }

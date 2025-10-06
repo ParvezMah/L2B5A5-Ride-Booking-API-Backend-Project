@@ -1,7 +1,7 @@
 import { validateRequest } from '../../middlewares/validateRequest';
 import { DriverControllers } from './driver.controller';
 import { Router } from "express";
-import { createDriverZodSchema } from './driver.validation';
+import { createDriverZodSchema, updateDriverZodSchema } from './driver.validation';
 import { checkAuth } from '../../middlewares/checkAuth';
 import { Role } from '../user/user.interface';
 
@@ -25,5 +25,9 @@ router.get("/",checkAuth(Role.ADMIN),DriverControllers.getAllDrivers);
 router.patch("/approve/:id",checkAuth(Role.ADMIN),DriverControllers.approveDriver);
 router.get("/:id",checkAuth(Role.ADMIN,Role.DRIVER),DriverControllers.getSingleDriver);
 router.patch('/suspend/:id', checkAuth(Role.ADMIN), DriverControllers.suspendDriver);
+
+
+router.patch(  "/:id",  checkAuth(Role.DRIVER),  validateRequest(updateDriverZodSchema),  DriverControllers.updateDriver);
+
 
 export const DriverRoutes = router
