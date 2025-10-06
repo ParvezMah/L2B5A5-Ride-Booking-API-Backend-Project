@@ -59,6 +59,45 @@ const getMyProfile = catchAsync(async (req: Request, res: Response, next: NextFu
   });
 });
 
+const updateMyProfile = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const driver = req.user as JwtPayload;
+  const result = await DriverServices.updateMyProfile(driver.userId, req.body);
+console.log(result)
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Driver profile updated successfully",
+    data: result,
+  });
+});
+
+const getAllDrivers = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const query = req.query;
+  const result = await DriverServices.getAllDrivers(query as Record<string, string>);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "All drivers retrieved successfully",
+    data: result.data,
+    meta: result.meta,
+  });
+});
+
+
+const approveDriver = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const driverId = req.params.id;
+
+  const result = await DriverServices.approveDriver(driverId);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Driver approved and role updated successfully",
+    data: result,
+  });
+});
+
+
 
 
 
@@ -67,5 +106,8 @@ const getMyProfile = catchAsync(async (req: Request, res: Response, next: NextFu
 
 export const DriverControllers = {
     applyAsDriver,
-    getMyProfile
+    getMyProfile,
+    updateMyProfile,
+    getAllDrivers,
+    approveDriver
 }

@@ -4,6 +4,8 @@ import AppError from "../../errorHelpers/appError";
 import { IDriver } from "./driver.interface";
 import { Driver } from "./driver.model";
 import { Types } from "mongoose";
+import { User } from "../user/user.model";
+import { QueryBuilder } from "../../utils/QueryBuilder";
 
 
 const applyAsDriver = async (user: any, payload: IDriver) => {
@@ -33,7 +35,57 @@ const getMyProfile = async (driverId: string) => {
   return driver
 };
 
+const updateMyProfile = async (driverId: string, payload: any) => {
+  return await Driver.findOneAndUpdate(
+    { userId: driverId },
+    { $set: payload },   
+    { new: true }
+  );
+};
+
+const getAllDrivers = async (query: Record<string, string>) => {
+  const queryBuilder = new QueryBuilder(Driver.find(), query);
+  const driverData = queryBuilder.filter().search([]).sort().fields().paginate();
+
+  const [data, meta] = await Promise.all([
+    driverData.build(),
+    queryBuilder.getMeta(),
+  ]);
+
+  return { data, meta };
+};
+
+const approveDriver = async (driverId: string) => {
+  const driver = await Driver.findById(driverId);
+
+  if (!driver) {
+    throw new AppError(httpStatus.NOT_FOUND, "Driver not found");
+  }
+
+  if (driver.status === "Approved") {
+    throw new AppError(httpStatus.BAD_REQUEST, "Driver is already approved");
+  }
+
+  // Update the driver status
+  driver.status = "Approved";
+  await driver.save();
+
+  // Update the user's role to 'DRIVER' if userId exists
+  if (driver.userId) {
+    await User.findByIdAndUpdate(driver.userId, { role: "DRIVER" });
+  }
+
+  return driver;
+};
+
+
+
+
+
 export const DriverServices = {
     applyAsDriver,
-    getMyProfile
+    getMyProfile,
+    updateMyProfile,
+    getAllDrivers,
+    approveDriver
 }
