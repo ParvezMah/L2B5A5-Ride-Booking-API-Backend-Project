@@ -6,6 +6,7 @@ import { QueryBuilder } from "../../utils/QueryBuilder";
 import { User } from "../user/user.model";
 import { IDriver } from "./driver.interface";
 import { Driver } from "./driver.model";
+import { Ride } from "../ride/ride.model";
 
 
 const applyAsDriver = async (user: any, payload: IDriver) => {
@@ -148,6 +149,43 @@ const updateLocation = async (driverId: string, payload : any) => {
   return driver;
 };
 
+const updateRidingStatus = async (
+  driverId: string,
+  ridingStatus: 'idle' | 'waiting_for_pickup' | 'in_transit' | 'unavailable'
+) => {
+  const driver = await Driver.findById(driverId);
+  if (!driver) {
+    throw new AppError(httpStatus.NOT_FOUND, "Driver not found");
+  }
+
+  driver.ridingStatus = ridingStatus;
+  await driver.save();
+
+  // ✅ Sync with current active ride
+  const activeRide = await Ride.findOne({
+    driverId: driver._id,
+    rideStatus: { $in: ["ACCEPTED", "PICKED_UP", "IN_TRANSIT"] },
+  });
+
+  if (activeRide) {
+    switch (ridingStatus) {
+      case "waiting_for_pickup":
+        activeRide.rideStatus = "ACCEPTED";
+        break;
+      case "in_transit":
+        activeRide.rideStatus = "IN_TRANSIT";
+        break;
+      case "idle":
+      case "unavailable":
+        // Optionally, cancel or pause ride if needed
+        break;
+    }
+    await activeRide.save();
+  }
+
+  return driver;
+};
+
 
 
 
@@ -162,5 +200,6 @@ export const DriverServices = {
     suspendDriver,
     updateDriver,
     updateOnlineStatus,
-    updateLocation
+    updateLocation,
+    updateRidingStatus
 }

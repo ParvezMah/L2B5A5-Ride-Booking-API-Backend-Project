@@ -111,9 +111,10 @@ const getMe = async (userId: string) => {
 
 const getSingleUser = async (id: string) => {
   const user = await User.findById(id).select("-password");
-  return {
-    data: user,
-  };
+  if(!user){
+    throw new AppError(httpStatus.NOT_FOUND, "User Not Found");
+  }
+  return user;
 };
 
  const getAdminStatsService = async () => {

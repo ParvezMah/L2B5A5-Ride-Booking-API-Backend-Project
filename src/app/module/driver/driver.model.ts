@@ -30,7 +30,7 @@ const DriverSchema = new Schema<IDriver>(
     },
     ridingStatus: {
       type: String,
-      enum: ['idle', 'waiting_for_pickup', 'in_transit', 'unavailable'],
+      enum: ['idle', 'waiting_for_pickup', 'in_transit', 'Complete', 'unavailable'],
       default: 'idle',
     },
     isOnRide: {

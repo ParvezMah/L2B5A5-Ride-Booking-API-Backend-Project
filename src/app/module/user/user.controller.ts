@@ -69,12 +69,13 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
 
 const getSingleUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
+    console.log("getSingleUser id : ", id);
     const result = await UserServices.getSingleUser(id);
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,
         message: "User Retrieved Successfully",
-        data: result.data
+        data: result
     })
 })
 

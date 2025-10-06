@@ -161,6 +161,20 @@ const updateLocation = catchAsync(async (req: Request, res: Response, next: Next
   });
 });
 
+const updateRidingStatus = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const driverId = req.params.id;
+  const { ridingStatus } = req.body;
+
+  const updatedDriver = await DriverServices.updateRidingStatus(driverId, ridingStatus);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Driver riding status updated successfully",
+    data: updatedDriver,
+  });
+});
+
 
 
 
@@ -176,5 +190,6 @@ export const DriverControllers = {
     suspendDriver,
     updateDriver,
     updateOnlineStatus,
-    updateLocation
+    updateLocation,
+    updateRidingStatus
 }
