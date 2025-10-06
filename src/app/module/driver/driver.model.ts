@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
+import { IDriver } from './driver.interface';
 
-const DriverSchema = new Schema(
+const DriverSchema = new Schema<IDriver>(
   {
     userId: {       
       type: Schema.Types.ObjectId,
@@ -64,4 +65,4 @@ const DriverSchema = new Schema(
   }
 );
 
-export const Driver = model('Driver', DriverSchema);
+export const Driver = model<IDriver>('Driver', DriverSchema);

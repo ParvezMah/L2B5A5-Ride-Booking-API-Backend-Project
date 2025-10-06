@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import httpStatus from "http-status-codes"
+import httpStatus from "http-status-codes";
+import { Types } from "mongoose";
 import AppError from "../../errorHelpers/appError";
+import { QueryBuilder } from "../../utils/QueryBuilder";
+import { User } from "../user/user.model";
 import { IDriver } from "./driver.interface";
 import { Driver } from "./driver.model";
-import { Types } from "mongoose";
-import { User } from "../user/user.model";
-import { QueryBuilder } from "../../utils/QueryBuilder";
 
 
 const applyAsDriver = async (user: any, payload: IDriver) => {
@@ -56,11 +56,15 @@ const getAllDrivers = async (query: Record<string, string>) => {
 };
 
 const approveDriver = async (driverId: string) => {
-  const driver = await Driver.findById(driverId);
+  console.log("DriverService userId : ", driverId)
+  
+  const driver = await Driver.findOne({userId: driverId});
+  console.log("approveDriver Driver : ", driver);
 
   if (!driver) {
     throw new AppError(httpStatus.NOT_FOUND, "Driver not found");
   }
+
 
   if (driver.status === "Approved") {
     throw new AppError(httpStatus.BAD_REQUEST, "Driver is already approved");

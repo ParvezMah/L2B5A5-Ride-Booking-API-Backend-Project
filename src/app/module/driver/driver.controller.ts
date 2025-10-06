@@ -86,6 +86,7 @@ const getAllDrivers = catchAsync(async (req: Request, res: Response, next: NextF
 
 const approveDriver = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const driverId = req.params.id;
+  console.log("driverId : ", driverId);
 
   const result = await DriverServices.approveDriver(driverId);
 
