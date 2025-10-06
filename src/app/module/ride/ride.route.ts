@@ -15,6 +15,7 @@ router.get("/all", checkAuth(Role.ADMIN), RideControllers.getAllRides);  // Post
 
 // Rider's Control
 router.post("/request",checkAuth(Role.RIDER,Role.DRIVER,Role.ADMIN),validateRequest(createRideZodSchema),RideControllers.requestRide);
+router.get("/me",checkAuth(Role.RIDER),RideControllers.getRiderRides);
 
 
 export const RideRoutes = router;

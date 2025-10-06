@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from "http-status-codes"
 import AppError from "../../errorHelpers/appError";
 import { IRide } from "./ride.interface";
@@ -81,9 +82,66 @@ const requestRide = async (riderId: string, rideData: Partial<IRide>) => {
   };
 };
 
+const getRiderRides = async (
+  riderId: string,
+  page: number,
+  limit: number,
+  rideStatus?: string,
+  startDate?: string,
+  endDate?: string,
+  minFare?: number,  
+  maxFare?: number
+) => {
+  const filter: any = { riderId };
+  
+
+  // filter by status
+  if (rideStatus) {
+    filter.rideStatus = rideStatus;
+  }
+
+  // filter by date range
+  if (startDate && endDate) {
+    filter.createdAt = {
+      $gte: new Date(startDate),
+      $lte: new Date(endDate),
+    };
+  }
+
+  // filter by fare range
+  if (minFare !== undefined || maxFare !== undefined) {
+    filter.fare = {};
+    if (minFare !== undefined) filter.fare.$gte = minFare;
+    if (maxFare !== undefined) filter.fare.$lte = maxFare;
+  }
+
+  const skip = (page - 1) * limit;
+
+  const rides = await Ride.find(filter)
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit)
+    .populate("driverId", "name vehicleType phone")
+    .exec();
+
+  const total = await Ride.countDocuments(filter);
+
+  return {
+    rides,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
+};
+
 export const RideService = {
     getAllRides,
 
+
     // Rider's Control
-    requestRide
+    requestRide,
+    getRiderRides
 }

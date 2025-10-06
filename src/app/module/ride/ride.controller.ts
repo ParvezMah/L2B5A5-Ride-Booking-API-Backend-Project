@@ -40,8 +40,36 @@ const getAllRides = catchAsync(async (_req: Request, res: Response, next: NextFu
 );
 
 
+const getRiderRides = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const rider = req.user as JwtPayload;
+  const riderId = rider.userId;
+
+  // query params from frontend
+  const { page = 1, limit = 10, status, startDate, endDate, minFare, maxFare } = req.query;
+
+  const result = await RideService.getRiderRides(
+    riderId,
+    Number(page),
+    Number(limit),
+    status as string,
+    startDate as string,
+    endDate as string,
+    minFare ? Number(minFare) : undefined,
+    maxFare ? Number(maxFare) : undefined
+  );
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Rider's rides retrieved successfully",
+    data: result,
+  });
+});
+
+
 export const RideControllers = {
     // Rider's Control
     requestRide,
+    getRiderRides,
     getAllRides
 }
