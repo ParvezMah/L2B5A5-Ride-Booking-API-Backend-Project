@@ -7,6 +7,11 @@ export enum Role {
   DRIVER = "DRIVER",
 }
 
+export enum UserStatus {
+  BLOCKED = "BLOCKED",
+  UNBLOCKED = "UNBLOCKED"
+}
+
 export interface IAuthProvider {
   provider: "google" | "credentials";
   providerId: string;
@@ -26,6 +31,7 @@ export interface IUser {
   password?: string;
   role: Role;
   picture?: string;
+  status?: UserStatus;
   isBlocked?: boolean;
   isActive?: boolean;
   auths: IAuthProvider[];

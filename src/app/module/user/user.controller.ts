@@ -78,11 +78,47 @@ const getSingleUser = catchAsync(async (req: Request, res: Response, next: NextF
     })
 })
 
+ const getAdminStatsController = catchAsync (async (req: Request, res: Response, next: NextFunction) => {
+
+    const stats = await UserServices.getAdminStatsService();
+    console.log(stats)
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Admin analytics fetched successfully",
+    data:stats,
+  });
+})
+
+const updateUserStatus = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const updatedUser = await UserServices.updateUserStatus(id, status);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: `User status updated to ${status}`,
+    data: updatedUser,
+  });
+});
+
+
+
+
+
+
+
+
 
 export const UserControllers = {
     createUser,
     getAllUsers,
     updateUser,
     getMe,
-    getSingleUser
+    getSingleUser,
+    getAdminStatsController,
+    updateUserStatus
 }
