@@ -83,6 +83,17 @@ const getAllDrivers = catchAsync(async (req: Request, res: Response, next: NextF
   });
 });
 
+const getSingleDriver = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const id = req.params.id;
+  const result = await DriverServices.getSingleDriver(id);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Driver retrieved successfully",
+    data: result,
+  });
+});
+
 
 const approveDriver = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const driverId = req.params.id;
@@ -110,5 +121,6 @@ export const DriverControllers = {
     getMyProfile,
     updateMyProfile,
     getAllDrivers,
-    approveDriver
+    getSingleDriver,
+    approveDriver,
 }

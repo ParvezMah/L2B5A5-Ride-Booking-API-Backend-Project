@@ -55,10 +55,19 @@ const getAllDrivers = async (query: Record<string, string>) => {
   return { data, meta };
 };
 
+const getSingleDriver = async (id: string) => {
+  const driver = await Driver.findById(id);
+  
+  if (!driver) {
+    throw new AppError(httpStatus.NOT_FOUND, "Driver not found");
+  }
+  return driver;
+};
+
 const approveDriver = async (driverId: string) => {
   console.log("DriverService userId : ", driverId)
   
-  const driver = await Driver.findOne({userId: driverId});
+  const driver = await Driver.findOne({_id: driverId});
   console.log("approveDriver Driver : ", driver);
 
   if (!driver) {
@@ -91,5 +100,6 @@ export const DriverServices = {
     getMyProfile,
     updateMyProfile,
     getAllDrivers,
+    getSingleDriver,
     approveDriver
 }
