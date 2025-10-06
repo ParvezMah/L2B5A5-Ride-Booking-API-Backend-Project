@@ -5,9 +5,7 @@ export const createDriverZodSchema = z.object({
     vehicleNumber: z
       .string({ error: "Vehicle number is required" })
       .min(3, { message: "Vehicle number must be at least 3 characters." }),
-    vehicleType: z.enum(["Bike", "Car"], {
-      errorMap: () => ({ message: "Vehicle type must be 'Bike' or 'Car'" }),
-    }),
+    vehicleType: z.enum(["Bike", "Car"], { message: "Vehicle type must be 'Bike' or 'Car'" }),
   }),
 
 location: z.object({

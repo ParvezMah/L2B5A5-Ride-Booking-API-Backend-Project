@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DriverRoutes = void 0;
+const validateRequest_1 = require("../../middlewares/validateRequest");
+const driver_controller_1 = require("./driver.controller");
+const express_1 = require("express");
+const driver_validation_1 = require("./driver.validation");
+const checkAuth_1 = require("../../middlewares/checkAuth");
+const user_interface_1 = require("../user/user.interface");
+const router = (0, express_1.Router)();
+router.post("/apply-driver", (0, checkAuth_1.checkAuth)(user_interface_1.Role.RIDER), (0, validateRequest_1.validateRequest)(driver_validation_1.createDriverZodSchema), driver_controller_1.DriverControllers.applyAsDriver);
+router.get("/me", (0, checkAuth_1.checkAuth)(user_interface_1.Role.DRIVER), driver_controller_1.DriverControllers.getMyProfile);
+// first make get all drivers for admin
+router.get("/", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), driver_controller_1.DriverControllers.getAllDrivers);
+router.patch("/approve/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), driver_controller_1.DriverControllers.approveDriver);
+router.get("/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN, user_interface_1.Role.DRIVER), driver_controller_1.DriverControllers.getSingleDriver);
+router.patch('/suspend/:id', (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), driver_controller_1.DriverControllers.suspendDriver);
+router.patch("/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.DRIVER), (0, validateRequest_1.validateRequest)(driver_validation_1.updateDriverZodSchema), driver_controller_1.DriverControllers.updateDriver);
+router.patch("/online-status/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.DRIVER), driver_controller_1.DriverControllers.updateOnlineStatus);
+router.patch("/location/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.DRIVER), driver_controller_1.DriverControllers.updateLocation);
+router.patch("/riding-status/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.DRIVER), driver_controller_1.DriverControllers.updateRidingStatus);
+exports.DriverRoutes = router;

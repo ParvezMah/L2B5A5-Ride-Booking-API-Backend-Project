@@ -177,6 +177,53 @@ const getRiderRides = async (
   return ride;
 };
 
+// Now Driver can accept ride
+const acceptRide = async (driverId: string, rideId: string) => {
+  const driverDoc = await Driver.findOne({ userId: driverId });
+  if (!driverDoc)
+    throw new AppError(httpStatus.NOT_FOUND, "Driver profile not found.");
+  if (driverDoc.status !== "Approved")
+    throw new AppError(httpStatus.FORBIDDEN, "Driver is not approved.");
+  if (driverDoc.isOnRide)
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Driver is already on another ride."
+    );
+
+  const ride = await Ride.findById(rideId);
+  if (!ride) throw new AppError(httpStatus.NOT_FOUND, "Ride not found.");
+  if (ride.rideStatus !== "REQUESTED")
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Ride already accepted or not available."
+    );
+
+  ride.driverId = new Types.ObjectId(driverId);
+  ride.rideStatus = "ACCEPTED";
+  ride.timestamps.acceptedAt = new Date();
+  await ride.save();
+
+  driverDoc.isOnRide = true;
+  driverDoc.ridingStatus = "waiting_for_pickup";
+  await driverDoc.save();
+
+  return ride;
+};
+
+const getDriverEarnings = async (driverId: string) => {
+  const rides = await Ride.find({
+    driverId,
+    rideStatus: "COMPLETED",
+  })
+    .sort({ completedAt: -1 })
+    .select("fare timestamps.completedAt riderId")
+    .populate("riderId", "name phone");
+
+  const totalEarnings = rides.reduce((sum, ride) => sum + (ride.fare || 0), 0);
+
+  return { totalEarnings, rideCount: rides.length, rides };
+};
+
 
 export const RideService = {
     getAllRides,
@@ -185,5 +232,8 @@ export const RideService = {
     // Rider's Control
     requestRide,
     getRiderRides,
-    cancelRide
+    cancelRide,
+
+    acceptRide, // test kora jay nai
+    getDriverEarnings
 }

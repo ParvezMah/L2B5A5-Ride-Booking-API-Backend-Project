@@ -9,8 +9,8 @@ import { createRideZodSchema } from "./ride.validation";
 
 const router = Router();
 
-
-router.get("/all", checkAuth(Role.ADMIN), RideControllers.getAllRides);  // Postman e pore test korbo
+// Admin's Control
+router.get("/all", checkAuth(Role.ADMIN), RideControllers.getAllRides);  
 
 
 // Rider's Control
@@ -20,6 +20,10 @@ router.post("/request",checkAuth(Role.RIDER,Role.DRIVER,Role.ADMIN),validateRequ
 router.get("/me",checkAuth(Role.RIDER),RideControllers.getRiderRides);
 // Rider can cancels his rides
 router.patch("/:id/cancel",checkAuth(Role.RIDER,Role.DRIVER),RideControllers.cancelRide);
+
+
+router.patch("/:id/accept",checkAuth(Role.DRIVER),RideControllers.acceptRide);  // TEst kora jay nai ekhono
+router.get("/earnings/me",checkAuth(Role.DRIVER),RideControllers.getDriverEarnings);
 
 
 export const RideRoutes = router;

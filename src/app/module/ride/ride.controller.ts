@@ -82,6 +82,41 @@ const cancelRide = catchAsync(async (req: Request, res: Response, next: NextFunc
   });
 });
 
+// Now Driver can accept ride
+const acceptRide = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const driver = req.user as JwtPayload;
+  const driverId  = driver.userId 
+  const rideId = req.params.id;
+  const result = await RideService.acceptRide(driverId, rideId);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Ride accepted successfully",
+    data: result,
+  });
+});
+
+const getDriverEarnings = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const driver = req.user as JwtPayload;
+    const driverId = driver.userId;
+
+    const result = await RideService.getDriverEarnings(driverId);
+   
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Driver earnings retrieved successfully",
+      data: result,
+    });
+  }
+);
+
+
+
+
 
 export const RideControllers = {
     getAllRides,
@@ -89,6 +124,10 @@ export const RideControllers = {
     // Rider's Control
     requestRide,
     getRiderRides,
-    cancelRide
+    cancelRide,
+
+
+    acceptRide, // test kora jay nai
+    getDriverEarnings
 
 }
