@@ -132,6 +132,22 @@ const updateOnlineStatus = async (driverId: string, onlineStatus: 'Active' | 'Of
   return driver;
 };
 
+const updateLocation = async (driverId: string, payload : any) => {
+  const location = payload
+  
+  const driver = await Driver.findById(driverId);
+  if (!driver) {
+    throw new AppError(httpStatus.NOT_FOUND, "Driver not found");
+  }
+
+  driver.location = {
+    type: 'Point',
+    coordinates: [location.coordinates[0], location.coordinates[1]],
+  };
+  await driver.save();
+  return driver;
+};
+
 
 
 
@@ -145,5 +161,6 @@ export const DriverServices = {
     approveDriver,
     suspendDriver,
     updateDriver,
-    updateOnlineStatus
+    updateOnlineStatus,
+    updateLocation
 }
