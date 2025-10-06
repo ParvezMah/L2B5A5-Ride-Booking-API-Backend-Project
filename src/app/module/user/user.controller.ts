@@ -95,6 +95,7 @@ const updateUserStatus = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const { status } = req.body;
 
+
   const updatedUser = await UserServices.updateUserStatus(id, status);
 
   sendResponse(res, {
