@@ -110,6 +110,18 @@ const approveDriver = catchAsync(async (req: Request, res: Response, next: NextF
 });
 
 
+const suspendDriver = catchAsync(async (req: Request, res: Response) => {
+  const driverId = req.params.id;
+  const result = await DriverServices.suspendDriver(driverId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Driver suspended successfully',
+    data: result,
+  });
+});
+
 
 
 
@@ -123,4 +135,5 @@ export const DriverControllers = {
     getAllDrivers,
     getSingleDriver,
     approveDriver,
+    suspendDriver
 }

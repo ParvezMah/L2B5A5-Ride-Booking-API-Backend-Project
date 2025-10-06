@@ -24,6 +24,6 @@ router.patch("/me",checkAuth(Role.DRIVER),DriverControllers.updateMyProfile); //
 router.get("/",checkAuth(Role.ADMIN),DriverControllers.getAllDrivers);
 router.patch("/approve/:id",checkAuth(Role.ADMIN),DriverControllers.approveDriver);
 router.get("/:id",checkAuth(Role.ADMIN,Role.DRIVER),DriverControllers.getSingleDriver);
-
+router.patch('/suspend/:id', checkAuth(Role.ADMIN), DriverControllers.suspendDriver);
 
 export const DriverRoutes = router

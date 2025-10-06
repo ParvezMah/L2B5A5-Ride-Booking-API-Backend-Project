@@ -64,10 +64,10 @@ const getSingleDriver = async (id: string) => {
   return driver;
 };
 
-const approveDriver = async (driverId: string) => {
-  console.log("DriverService userId : ", driverId)
+const approveDriver = async (id: string) => {
+  console.log("DriverService userId : ", id)
   
-  const driver = await Driver.findOne({_id: driverId});
+  const driver = await Driver.findById(id); // It's not a best practise
   console.log("approveDriver Driver : ", driver);
 
   if (!driver) {
@@ -91,6 +91,25 @@ const approveDriver = async (driverId: string) => {
   return driver;
 };
 
+const suspendDriver = async (id: string) => {
+  const driver = await Driver.findById(id);
+  // const driver = await Driver.findOne({_id:driverId}); // It's not a best practise
+
+  if (!driver) {
+    throw new AppError(httpStatus.NOT_FOUND, "Driver not found");
+  }
+
+  if (driver.status === "Suspended") {
+    throw new AppError(httpStatus.BAD_REQUEST, "Driver is already suspended");
+  }
+
+  // Update the driver status
+  driver.status = "Suspended";
+  await driver.save();
+
+  return driver;
+};
+
 
 
 
@@ -101,5 +120,6 @@ export const DriverServices = {
     updateMyProfile,
     getAllDrivers,
     getSingleDriver,
-    approveDriver
+    approveDriver,
+    suspendDriver
 }
