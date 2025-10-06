@@ -39,7 +39,6 @@ const getAllRides = catchAsync(async (_req: Request, res: Response, next: NextFu
   }
 );
 
-
 const getRiderRides = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const rider = req.user as JwtPayload;
   const riderId = rider.userId;
@@ -66,10 +65,30 @@ const getRiderRides = catchAsync(async (req: Request, res: Response, next: NextF
   });
 });
 
+const cancelRide = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const user = req.user as JwtPayload; 
+  const rideId = req.params.id;
+
+ 
+  const result = await RideService.cancelRide(
+    { userId: user.userId, role: user.role },
+    rideId
+  );
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Ride cancelled successfully",
+    data: result,
+  });
+});
+
 
 export const RideControllers = {
+    getAllRides,
+
     // Rider's Control
     requestRide,
     getRiderRides,
-    getAllRides
+    cancelRide
+
 }

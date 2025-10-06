@@ -14,8 +14,12 @@ router.get("/all", checkAuth(Role.ADMIN), RideControllers.getAllRides);  // Post
 
 
 // Rider's Control
+// Rider can reuest for ride
 router.post("/request",checkAuth(Role.RIDER,Role.DRIVER,Role.ADMIN),validateRequest(createRideZodSchema),RideControllers.requestRide);
+// Rider can check his own rides
 router.get("/me",checkAuth(Role.RIDER),RideControllers.getRiderRides);
+// Rider can cancels his rides
+router.patch("/:id/cancel",checkAuth(Role.RIDER,Role.DRIVER),RideControllers.cancelRide);
 
 
 export const RideRoutes = router;

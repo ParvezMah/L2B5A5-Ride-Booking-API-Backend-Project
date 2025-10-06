@@ -5,6 +5,9 @@ import { IRide } from "./ride.interface";
 import { Ride } from "./ride.model";
 import { Driver } from "../driver/driver.model";
 import { haversineDistance } from "../../utils/haversine";
+import { JwtPayload } from "jsonwebtoken";
+import { Types } from "mongoose";
+import { Role } from "../user/user.interface";
 
 const getAllRides = async () => {
   const rides = await Ride.find({}).sort({ "timestamps.requestedAt": -1 });
@@ -137,11 +140,50 @@ const getRiderRides = async (
   };
 };
 
+ const cancelRide = async (user: JwtPayload, rideId: string) => {
+  const ride = await Ride.findById(rideId);
+  if (!ride) throw new AppError(httpStatus.NOT_FOUND, "Ride not found.");
+
+  const userId = new Types.ObjectId(user.userId);
+
+  // Rider can cancel only their own rides
+  if (user.role === Role.RIDER && !ride.riderId.equals(userId)) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You can only cancel your own rides."
+    );
+  }
+
+  // Driver can cancel only assigned rides
+  if (user.role === Role.DRIVER && !ride.driverId?.equals(userId)) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You can only cancel rides assigned to you."
+    );
+  }
+
+  // Only REQUESTED or ACCEPTED rides can be cancelled
+  if (!["REQUESTED", "ACCEPTED"].includes(ride.rideStatus?? "")) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Ride can only be cancelled before pickup."
+    );
+  }
+
+  ride.rideStatus = "CANCELLED";
+  ride.timestamps.cancelledAt = new Date(); // cancel timestamp
+
+  await ride.save();
+  return ride;
+};
+
+
 export const RideService = {
     getAllRides,
 
 
     // Rider's Control
     requestRide,
-    getRiderRides
+    getRiderRides,
+    cancelRide
 }
