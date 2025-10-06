@@ -27,7 +27,7 @@ router.get("/:id",checkAuth(Role.ADMIN,Role.DRIVER),DriverControllers.getSingleD
 router.patch('/suspend/:id', checkAuth(Role.ADMIN), DriverControllers.suspendDriver);
 
 
-router.patch(  "/:id",  checkAuth(Role.DRIVER),  validateRequest(updateDriverZodSchema),  DriverControllers.updateDriver);
-
+router.patch("/:id",  checkAuth(Role.DRIVER),  validateRequest(updateDriverZodSchema),  DriverControllers.updateDriver);
+router.patch( "/online-status/:id", checkAuth(Role.DRIVER), DriverControllers.updateOnlineStatus);
 
 export const DriverRoutes = router

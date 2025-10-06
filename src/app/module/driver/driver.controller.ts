@@ -134,6 +134,20 @@ const updateDriver = catchAsync(async (req: Request, res: Response, next: NextFu
   });
 });
 
+const updateOnlineStatus = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const driverId = req.params.id;
+  const { onlineStatus } = req.body;
+
+  const updatedDriver = await DriverServices.updateOnlineStatus(driverId, onlineStatus);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Driver online status updated successfully",
+    data: updatedDriver,
+  });
+});
+
 
 
 
@@ -148,5 +162,6 @@ export const DriverControllers = {
     getSingleDriver,
     approveDriver,
     suspendDriver,
-    updateDriver
+    updateDriver,
+    updateOnlineStatus
 }

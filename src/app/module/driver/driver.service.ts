@@ -121,6 +121,17 @@ const updateDriver = async (id: string, payload: Partial<IDriver>) => {
   return driver;
 };
 
+const updateOnlineStatus = async (driverId: string, onlineStatus: 'Active' | 'Offline') => {
+  const driver = await Driver.findById(driverId);
+  if (!driver) {
+    throw new AppError(httpStatus.NOT_FOUND, "Driver not found");
+  }
+
+  driver.onlineStatus = onlineStatus;
+  await driver.save();
+  return driver;
+};
+
 
 
 
@@ -133,5 +144,6 @@ export const DriverServices = {
     getSingleDriver,
     approveDriver,
     suspendDriver,
-    updateDriver
+    updateDriver,
+    updateOnlineStatus
 }
