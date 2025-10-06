@@ -114,6 +114,17 @@ const getDriverEarnings = catchAsync(
   }
 );
 
+const getAvailableRides = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const result = await RideService.getAvailableRides();
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Available rides retrieved successfully",
+    data: result,
+  });
+});
+
 
 
 
@@ -128,6 +139,7 @@ export const RideControllers = {
 
 
     acceptRide, // test kora jay nai
-    getDriverEarnings
+    getDriverEarnings,
+    getAvailableRides
 
 }

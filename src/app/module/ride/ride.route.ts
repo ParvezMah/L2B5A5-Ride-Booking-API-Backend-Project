@@ -24,6 +24,6 @@ router.patch("/:id/cancel",checkAuth(Role.RIDER,Role.DRIVER),RideControllers.can
 
 router.patch("/:id/accept",checkAuth(Role.DRIVER),RideControllers.acceptRide);  // TEst kora jay nai ekhono
 router.get("/earnings/me",checkAuth(Role.DRIVER),RideControllers.getDriverEarnings);
-
+router.get("/available",checkAuth(Role.DRIVER),RideControllers.getAvailableRides);
 
 export const RideRoutes = router;

@@ -224,6 +224,13 @@ const getDriverEarnings = async (driverId: string) => {
   return { totalEarnings, rideCount: rides.length, rides };
 };
 
+const getAvailableRides = async () => {
+  const rides = await Ride.find({ rideStatus: "REQUESTED" }).sort({
+    "timestamps.requestedAt": 1,
+  });
+  return rides;
+};
+
 
 export const RideService = {
     getAllRides,
@@ -235,5 +242,6 @@ export const RideService = {
     cancelRide,
 
     acceptRide, // test kora jay nai
-    getDriverEarnings
+    getDriverEarnings,
+    getAvailableRides
 }
