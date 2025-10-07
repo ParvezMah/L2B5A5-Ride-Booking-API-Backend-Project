@@ -204,7 +204,7 @@ Install my-project with npm
 
 ## My Submission of this Project
 
-- **GitHub Repository**     : https://github.com/ParvezMah/L2B5A5-Ride-Booking-API-Backend-Project.git 
+- **GitHub Repository**     : https://github.com/ParvezMah/L2B5A5-Ride-Booking-API-Backend-Project.git
 - **Live Deployment Link**  : https://l2-b5-a5-ride-booking-api-backend.vercel.app/
 - **Video Explanation**     : https://drive.google.com/file/d/1J3wNqtsEPCwaAhZ3gAH3pvktSAvuLbVU/view?usp=sharing 
 
