@@ -46,4 +46,6 @@ export interface IUser {
   averageRating?: number;
   totalRatings?: number;
   address?: string;
+  isVerified?: boolean,
+  isDeleted?: boolean
 }
