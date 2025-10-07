@@ -1,11 +1,11 @@
-import express, { Request, Response } from "express"
-import router from "./app/routes";
+import { expressSession } from 'expres';
 import cookieParser from "cookie-parser";
-import { envVars } from "./app/config/env";
 import cors from "cors";
-import expressSession from "express-session"
+import express, { Request, Response } from "express";
+import { envVars } from "./app/config/env";
 import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
 import notFound from "./app/middlewares/notFound";
+import router from "./app/routes";
 import passport from "passport";
 
 const app = express();
@@ -25,7 +25,7 @@ app.use(expressSession({
     secret : envVars.EXPRESS_SESSION_SECRET,
     resave: false,
     saveUninitialized: false
-))
+}))
 
 
 app.use("/api/v1", router);
