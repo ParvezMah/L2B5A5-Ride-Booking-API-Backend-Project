@@ -60,7 +60,6 @@ const resetPassword = async (oldPassword: string, newPassword: string, decodedTo
     }
 
     user!.password = await bcryptjs.hash(newPassword, Number(envVars.BCRYPT_SALT_ROUND))
-    console.log("Password Changed & Saved : ", user!.password)
 
     user!.save();
 };

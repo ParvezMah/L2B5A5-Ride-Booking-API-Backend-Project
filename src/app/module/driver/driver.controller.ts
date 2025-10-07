@@ -29,9 +29,6 @@ const applyAsDriver = catchAsync(async (req: Request, res: Response, next: NextF
   drivingLicense: req.file?.path,
 };
 
-
-  console.log(payload)
-
   const result = await DriverServices.applyAsDriver(user, payload);
 
   sendResponse(res, {
@@ -45,11 +42,8 @@ const applyAsDriver = catchAsync(async (req: Request, res: Response, next: NextF
 const getMyProfile = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const driver = req.user as JwtPayload;
 
-  // console.log(driver)
-
   const result = await DriverServices.getMyProfile(driver.userId);
 
-  // console.log(result)
 
   sendResponse(res, {
     success: true,
@@ -62,7 +56,6 @@ const getMyProfile = catchAsync(async (req: Request, res: Response, next: NextFu
 const updateMyProfile = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const driver = req.user as JwtPayload;
   const result = await DriverServices.updateMyProfile(driver.userId, req.body);
-console.log(result)
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
@@ -97,7 +90,6 @@ const getSingleDriver = catchAsync(async (req: Request, res: Response, next: Nex
 
 const approveDriver = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const driverId = req.params.id;
-  console.log("driverId : ", driverId);
 
   const result = await DriverServices.approveDriver(driverId);
 

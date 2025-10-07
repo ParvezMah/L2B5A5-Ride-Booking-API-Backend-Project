@@ -260,7 +260,6 @@ const updateUserStatus = (userId, status) => __awaiter(void 0, void 0, void 0, f
         throw new appError_1.default(http_status_codes_1.default.BAD_REQUEST, "Invalid user status value");
     }
     const user = yield user_model_1.User.findById(userId);
-    console.log(user);
     if (!user) {
         throw new appError_1.default(http_status_codes_1.default.NOT_FOUND, "User not found");
     }

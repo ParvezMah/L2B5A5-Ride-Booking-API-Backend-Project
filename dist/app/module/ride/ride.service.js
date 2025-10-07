@@ -162,11 +162,30 @@ const acceptRide = (driverId, rideId) => __awaiter(void 0, void 0, void 0, funct
     yield driverDoc.save();
     return ride;
 });
+const getDriverEarnings = (driverId) => __awaiter(void 0, void 0, void 0, function* () {
+    const rides = yield ride_model_1.Ride.find({
+        driverId,
+        rideStatus: "COMPLETED",
+    })
+        .sort({ completedAt: -1 })
+        .select("fare timestamps.completedAt riderId")
+        .populate("riderId", "name phone");
+    const totalEarnings = rides.reduce((sum, ride) => sum + (ride.fare || 0), 0);
+    return { totalEarnings, rideCount: rides.length, rides };
+});
+const getAvailableRides = () => __awaiter(void 0, void 0, void 0, function* () {
+    const rides = yield ride_model_1.Ride.find({ rideStatus: "REQUESTED" }).sort({
+        "timestamps.requestedAt": 1,
+    });
+    return rides;
+});
 exports.RideService = {
     getAllRides,
     // Rider's Control
     requestRide,
     getRiderRides,
     cancelRide,
-    acceptRide
+    acceptRide, // test kora jay nai
+    getDriverEarnings,
+    getAvailableRides
 };

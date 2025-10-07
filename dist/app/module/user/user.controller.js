@@ -40,9 +40,7 @@ const updateUser = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, 
     const userId = req.params.id;
     const verifiedToken = req.user;
     const payload = req.body;
-    console.log(userId, verifiedToken, payload);
     const user = yield user_service_1.UserServices.updateUser(userId, payload, verifiedToken);
-    console.log("Updated user data : ", user);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.CREATED,
@@ -62,7 +60,6 @@ const getMe = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 
 }));
 const getSingleUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    console.log("getSingleUser id : ", id);
     const result = yield user_service_1.UserServices.getSingleUser(id);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
@@ -73,7 +70,6 @@ const getSingleUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter
 }));
 const getAdminStatsController = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const stats = yield user_service_1.UserServices.getAdminStatsService();
-    console.log(stats);
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: http_status_codes_1.default.OK,
         success: true,

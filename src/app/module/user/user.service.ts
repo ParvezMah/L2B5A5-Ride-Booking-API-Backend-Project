@@ -295,7 +295,6 @@ const updateUserStatus = async (userId: string, status: UserStatus) => {
   }
 
   const user = await User.findById(userId);
-  console.log(user)
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User not found");
   }

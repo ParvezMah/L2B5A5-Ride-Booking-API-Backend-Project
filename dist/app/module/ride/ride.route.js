@@ -9,7 +9,7 @@ const validateRequest_1 = require("../../middlewares/validateRequest");
 const ride_validation_1 = require("./ride.validation");
 const router = (0, express_1.Router)();
 // Admin's Control
-router.get("/all", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), ride_controller_1.RideControllers.getAllRides); // Postman e pore test korbo
+router.get("/all", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), ride_controller_1.RideControllers.getAllRides);
 // Rider's Control
 // Rider can reuest for ride
 router.post("/request", (0, checkAuth_1.checkAuth)(user_interface_1.Role.RIDER, user_interface_1.Role.DRIVER, user_interface_1.Role.ADMIN), (0, validateRequest_1.validateRequest)(ride_validation_1.createRideZodSchema), ride_controller_1.RideControllers.requestRide);
@@ -17,5 +17,7 @@ router.post("/request", (0, checkAuth_1.checkAuth)(user_interface_1.Role.RIDER, 
 router.get("/me", (0, checkAuth_1.checkAuth)(user_interface_1.Role.RIDER), ride_controller_1.RideControllers.getRiderRides);
 // Rider can cancels his rides
 router.patch("/:id/cancel", (0, checkAuth_1.checkAuth)(user_interface_1.Role.RIDER, user_interface_1.Role.DRIVER), ride_controller_1.RideControllers.cancelRide);
-router.patch("/:id/accept", (0, checkAuth_1.checkAuth)(user_interface_1.Role.DRIVER), ride_controller_1.RideControllers.acceptRide);
+router.patch("/:id/accept", (0, checkAuth_1.checkAuth)(user_interface_1.Role.DRIVER), ride_controller_1.RideControllers.acceptRide); // TEst kora jay nai ekhono
+router.get("/earnings/me", (0, checkAuth_1.checkAuth)(user_interface_1.Role.DRIVER), ride_controller_1.RideControllers.getDriverEarnings);
+router.get("/available", (0, checkAuth_1.checkAuth)(user_interface_1.Role.DRIVER), ride_controller_1.RideControllers.getAvailableRides);
 exports.RideRoutes = router;

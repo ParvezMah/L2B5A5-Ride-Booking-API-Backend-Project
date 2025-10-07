@@ -24,19 +24,16 @@ const ride_model_1 = require("../ride/ride.model");
 const applyAsDriver = (user, payload) => __awaiter(void 0, void 0, void 0, function* () {
     // Check if user has already applied
     const existing = yield driver_model_1.Driver.findOne({ userId: user.userId });
-    console.log(existing);
     if (existing) {
         throw new appError_1.default(http_status_codes_1.default.BAD_REQUEST, "You have already applied as a driver");
     }
     const driverData = Object.assign(Object.assign({}, payload), { userId: user.userId, status: "Pending" });
-    console.log(driverData);
     const newDriver = yield driver_model_1.Driver.create(driverData);
     return newDriver;
 });
 const getMyProfile = (driverId) => __awaiter(void 0, void 0, void 0, function* () {
     // const driver =  await Driver.findOne({userId:driverId})
     const driver = yield driver_model_1.Driver.findOne({ userId: new mongoose_1.Types.ObjectId(driverId) });
-    console.log("getMyProfile drive : ", driver);
     return driver;
 });
 const updateMyProfile = (driverId, payload) => __awaiter(void 0, void 0, void 0, function* () {
@@ -59,9 +56,7 @@ const getSingleDriver = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return driver;
 });
 const approveDriver = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("DriverService userId : ", id);
     const driver = yield driver_model_1.Driver.findById(id); // It's not a best practise
-    console.log("approveDriver Driver : ", driver);
     if (!driver) {
         throw new appError_1.default(http_status_codes_1.default.NOT_FOUND, "Driver not found");
     }

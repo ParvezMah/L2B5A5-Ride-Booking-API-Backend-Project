@@ -38,14 +38,12 @@ const updateUser = catchAsync(async (req: Request, res: Response) => {
 
   const payload = req.body;
 
-  console.log(userId, verifiedToken, payload);
-
   const user = await UserServices.updateUser(
     userId,
     payload,
     verifiedToken as JwtPayload
   );
-  console.log("Updated user data : ", user)
+
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.CREATED,
@@ -69,7 +67,6 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
 
 const getSingleUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
-    console.log("getSingleUser id : ", id);
     const result = await UserServices.getSingleUser(id);
     sendResponse(res, {
         success: true,
@@ -82,7 +79,7 @@ const getSingleUser = catchAsync(async (req: Request, res: Response, next: NextF
  const getAdminStatsController = catchAsync (async (req: Request, res: Response, next: NextFunction) => {
 
     const stats = await UserServices.getAdminStatsService();
-    console.log(stats)
+
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

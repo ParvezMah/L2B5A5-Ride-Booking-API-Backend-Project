@@ -38,7 +38,6 @@ const applyAsDriver = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter
         },
         drivingLicense: (_a = req.file) === null || _a === void 0 ? void 0 : _a.path,
     };
-    console.log(payload);
     const result = yield driver_service_1.DriverServices.applyAsDriver(user, payload);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
@@ -49,9 +48,7 @@ const applyAsDriver = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter
 }));
 const getMyProfile = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const driver = req.user;
-    // console.log(driver)
     const result = yield driver_service_1.DriverServices.getMyProfile(driver.userId);
-    // console.log(result)
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,
@@ -62,7 +59,6 @@ const getMyProfile = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(
 const updateMyProfile = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const driver = req.user;
     const result = yield driver_service_1.DriverServices.updateMyProfile(driver.userId, req.body);
-    console.log(result);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,
@@ -93,7 +89,6 @@ const getSingleDriver = (0, catchAsync_1.catchAsync)((req, res, next) => __await
 }));
 const approveDriver = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const driverId = req.params.id;
-    console.log("driverId : ", driverId);
     const result = yield driver_service_1.DriverServices.approveDriver(driverId);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,

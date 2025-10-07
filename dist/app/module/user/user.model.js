@@ -47,6 +47,8 @@ const userSchema = new mongoose_1.Schema({
     averageRating: { type: Number, default: 0 },
     totalRatings: { type: Number, default: 0 },
     address: { type: String },
+    isVerified: { type: Boolean, default: false },
+    isDeleted: { type: Boolean, default: false }
 }, {
     timestamps: true,
     versionKey: false,

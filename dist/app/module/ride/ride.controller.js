@@ -77,11 +77,33 @@ const acceptRide = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(vo
         data: result,
     });
 }));
+const getDriverEarnings = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const driver = req.user;
+    const driverId = driver.userId;
+    const result = yield ride_service_1.RideService.getDriverEarnings(driverId);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "Driver earnings retrieved successfully",
+        data: result,
+    });
+}));
+const getAvailableRides = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield ride_service_1.RideService.getAvailableRides();
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "Available rides retrieved successfully",
+        data: result,
+    });
+}));
 exports.RideControllers = {
     getAllRides,
     // Rider's Control
     requestRide,
     getRiderRides,
     cancelRide,
-    acceptRide
+    acceptRide, // test kora jay nai
+    getDriverEarnings,
+    getAvailableRides
 };

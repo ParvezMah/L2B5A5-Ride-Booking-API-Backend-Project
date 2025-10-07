@@ -168,6 +168,7 @@ Install my-project with npm
 
 | Strategy             | Description              |
 | -------------------- | ------------------------ |
+| **JWT**              | Email and Password login |
 | **Local Strategy**   | Email and Password login |
 | **Google OAuth 2.0** | Google sign-in for users |
 

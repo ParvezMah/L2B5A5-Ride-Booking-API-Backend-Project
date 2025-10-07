@@ -10,7 +10,6 @@ const seedSuparAdmin = async () => {
     });
 
     if (isSuparAdmin) {
-      console.log("Super Admin Seeded Already!");
       return;
     }
     const hasedPassword = await bcryptjs.hash(

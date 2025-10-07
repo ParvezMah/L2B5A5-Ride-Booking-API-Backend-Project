@@ -22,7 +22,6 @@ const seedSuparAdmin = () => __awaiter(void 0, void 0, void 0, function* () {
             email: env_1.envVars.SUPER_ADMIN_EMAIL,
         });
         if (isSuparAdmin) {
-            console.log("Super Admin Seeded Already!");
             return;
         }
         const hasedPassword = yield bcryptjs_1.default.hash(env_1.envVars.SUPER_ADMIN_PASSWORD, Number(env_1.envVars.BCRYPT_SALT_ROUND));

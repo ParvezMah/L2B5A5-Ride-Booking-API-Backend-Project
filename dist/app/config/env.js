@@ -7,7 +7,23 @@ exports.envVars = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const loadEnvVariables = () => {
-    const requiredEnvVariables = ["PORT", "DB_URL", "NODE_ENV", "BCRYPT_SALT_ROUND", "JWT_ACCESS_EXPIRES", "JWT_ACCESS_SECRET", "SUPER_ADMIN_EMAIL", "SUPER_ADMIN_PASSWORD", "JWT_REFRESH_SECRET", "JWT_REFRESH_EXPIRES"];
+    const requiredEnvVariables = [
+        "PORT",
+        "DB_URL",
+        "NODE_ENV",
+        "BCRYPT_SALT_ROUND",
+        "JWT_ACCESS_EXPIRES",
+        "JWT_ACCESS_SECRET",
+        "SUPER_ADMIN_EMAIL",
+        "SUPER_ADMIN_PASSWORD",
+        "JWT_REFRESH_SECRET",
+        "JWT_REFRESH_EXPIRES",
+        "GOOGLE_CLIENT_SECRET",
+        "GOOGLE_CLIENT_ID",
+        "GOOGLE_CALLBACK_URL",
+        "EXPRESS_SESSION_SECRET",
+        "FRONTEND_URL"
+    ];
     requiredEnvVariables.forEach(key => {
         if (!process.env[key]) {
             throw new Error(`Missing required environment variable ${key}`);
@@ -23,7 +39,12 @@ const loadEnvVariables = () => {
         SUPER_ADMIN_EMAIL: process.env.SUPER_ADMIN_EMAIL,
         SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD,
         JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
-        JWT_REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES
+        JWT_REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES,
+        GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+        GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+        GOOGLE_CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL,
+        EXPRESS_SESSION_SECRET: process.env.EXPRESS_SESSION_SECRET,
+        FRONTEND_URL: process.env.FRONTEND_URL
     };
 };
 exports.envVars = loadEnvVariables();

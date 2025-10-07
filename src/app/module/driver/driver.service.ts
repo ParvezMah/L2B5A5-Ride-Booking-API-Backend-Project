@@ -12,7 +12,6 @@ import { Ride } from "../ride/ride.model";
 const applyAsDriver = async (user: any, payload: IDriver) => {
   // Check if user has already applied
   const existing = await Driver.findOne({ userId: user.userId });
-  console.log(existing)
   if (existing) {
     throw new AppError(httpStatus.BAD_REQUEST, "You have already applied as a driver");
   }
@@ -23,8 +22,6 @@ const applyAsDriver = async (user: any, payload: IDriver) => {
     status: "Pending", // initially pending
   };
 
-  console.log(driverData)
-
   const newDriver = await Driver.create(driverData);
   return newDriver;
 };
@@ -32,7 +29,6 @@ const applyAsDriver = async (user: any, payload: IDriver) => {
 const getMyProfile = async (driverId: string) => {
   // const driver =  await Driver.findOne({userId:driverId})
   const driver =  await Driver.findOne({userId:new Types.ObjectId(driverId)})
-  console.log("getMyProfile drive : ", driver);
   return driver
 };
 
@@ -66,10 +62,8 @@ const getSingleDriver = async (id: string) => {
 };
 
 const approveDriver = async (id: string) => {
-  console.log("DriverService userId : ", id)
   
   const driver = await Driver.findById(id); // It's not a best practise
-  console.log("approveDriver Driver : ", driver);
 
   if (!driver) {
     throw new AppError(httpStatus.NOT_FOUND, "Driver not found");
